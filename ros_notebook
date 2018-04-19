@@ -1,0 +1,42 @@
+显示在某个话题上发布的数据, 用法： rostopic echo [topic]
+rostopic echo /turtle1/cmd_vel
+
+rostopic type 命令用来查看所发布话题的消息类型,用法： rostopic type [topic]
+rostopic type /turtle1/cmd_vel
+
+rostopic pub可以把数据发布到当前某个正在广播的话题上。用法： rostopic pub [topic] [msg_type] [args]　　
+rostopic pub -1 /turtle1/command_velocity turtlesim/Velocity  -- 2.0  1.8
+
+发布pose array:
+rostopic pub -r 10 /particlecloud geometry_msgs/PoseArray "{header: {stamp: now, frame_id: map}, poses: [{position: [1,2,3]}, {position: [4,5,6]}]}"
+
+rostopic pub -r 30 /particlecloud geometry_msgs/PoseArray "{header: {stamp: now, frame_id: map}, poses: [{position: [1,0.2,0],orientation: [1,0,0,0]},{position: [2,0.4,0],orientation: [0,1,0,0]},{position: [3,0.6,0],orientation: [0,0,1,0]},{position: [4,0.8,0],orientation: [0,0,0,1]}]}"
+
+rostopic pub -r 30 /particlecloud geometry_msgs/PoseArray "{header: {stamp: now, frame_id: map}, poses: [{position: [1,0.2,0],orientation: [0,0,0.6,0.8]},{position: [2,0.4,0],orientation: [0,0,0.76,0.66]},{position: [3,0.6,0],orientation: [0,0,1,0.3]},{position: [4,0.8,0],orientation: [0,0,0.56,0.5]},{position: [-2,0.4,0],orientation: [0,0,0.7,0.64]},{position: [0.2,1.4,0],orientation: [0,0,0.76,0.8]},{position: [2.6,2.4,0],orientation: [0,0,0.5,0.9]},{position: [1.2,-4.4,0],orientation: [0,0,0.67,0.89]},{position: [2.2,-2.4,0],orientation: [0,0,0.56,0.87]},{position: [-3.2,2.4,0],orientation: [0,0,0.6,0.4]},{position: [0.2,-0.4,0],orientation: [0,0,0.5,0.22]},{position: [-2,-0.4,0],orientation: [0,0,0.678,0.68]},{position: [-1.2,2.4,0],orientation: [0,0,0.98,0.3]},{position: [2.2,-3.4,0],orientation: [0,0,0.7,0.4]},{position: [2.5,3.4,0],orientation: [0,0,0.9,0.7]},{position: [2.3,4,0],orientation: [0,0,0.7,0.34]},{position: [1.2,-3.4,0],orientation: [0,0,0,0.8,0.54]},{position: [3.2,2.4,0],orientation: [0,0,0.45,0.76]}]}"
+
+
+rostopic pub -r 10 /amcl_pose geometry_msgs/PoseWithCovarianceStamped "{header: {stamp: now, frame_id: map},pose: {pose: {position: [0.609279412198,-2.0025905938,0.0],orientation: [0.0,0.0,0.846473770129,0.532430424077]},covariance:[0.006723820293537186, -0.0019821419771093307, 0.0, 0.0, 0.0, 0.0, -0.0019821419771093307, 0.011221353856480043, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0022154210693588684]}}"
+
+rostopic pub -r 10 /initialpose geometry_msgs/PoseWithCovarianceStamped "{header: {stamp: now, frame_id: map},pose: {pose: {position: [0.609279412198,-2.0025905938,0.0],orientation: [0.0,0.0,0.846473770129,0.532430424077]},covariance:[0.006723820293537186, -0.0019821419771093307, 0.0, 0.0, 0.0, 0.0, -0.0019821419771093307, 0.011221353856480043, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0022154210693588684]}}"
+
+rostopic pub -r 10 /initialpose geometry_msgs/PoseWithCovarianceStped "{header: {stamp: now, frame_id: map},pose: {pose: {position: [-2.09279412198,-2.25905938,0.0],orientation: [0.0,0.0,0.846473770129,0.932430424077]},covariance:[0.923820293537186, -0.9821419771093307, 0.0, 0.0, 0.0, 0.0, -0.619821419771093307, 0.91221353856480043, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.54210693588684]}}"
+
+header: 
+  seq: 113
+  stamp: 
+    secs: 798
+    nsecs: 201000000
+  frame_id: map
+pose: 
+  pose: 
+    position: 
+      x: 0.609279412198
+      y: -2.0025905938
+      z: 0.0
+    orientation: 
+      x: 0.0
+      y: 0.0
+      z: 0.846473770129
+      w: 0.532430424077
+  covariance: [0.006723820293537186, -0.0019821419771093307, 0.0, 0.0, 0.0, 0.0, -0.0019821419771093307, 0.011221353856480043, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0022154210693588684]
+

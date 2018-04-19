@@ -1,0 +1,26 @@
+Learning ROS for Robotics Programming -Seconf Edition
+
+1.mapping
+
+
+roslaunch chapter8_tutorials gazebo_mapping_robot.launch model:="`rospack find robot1_description`/urdf/robot1_base_04.xacro"
+rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+rosrun map_server map_saver -f map
+
+2.navigation
+
+roslaunch chapter9_tutorials chapter9_configuration_gazebo.launch
+roslaunch chapter9_tutorials move_base.launch
+
+
+//navigation_workspace
+1.mapping
+
+roslaunch hi_navigation gazebo_mapping_robot.launch model:="`rospack find hi_navigation`/urdf/robot1_base_04.xacro"
+rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+rosrun map_server map_saver -f map
+
+2.navigation
+
+roslaunch hi_navigation configuration_gazebo.launch
+roslaunch hi_navigation move_base.launch

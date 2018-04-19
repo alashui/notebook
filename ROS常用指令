@@ -1,0 +1,53 @@
+查看环境变量：echo $ROS_PACKAGE_PATH
+增加环境变量：source /home/turtlebot/catkin_ws/devel/setup.bash（设置/home/exbot/catkin_ws/src）
+source /opt/ros/indigo/setup.bash（在每次打开终端时你都需要先运行上面这条命令后才能运行ros相关的命令）
+模拟器：sudo apt-get install ros-<distro>-ros-tutorials（distro改为indigo）
+禁用笔记本键盘：xinput set-prop 17 "Device Enabled" 0
+查看ubantu版本：lsb_release -a
+查看环境变量（gedit）:sudo gedit ~/.bashrc
+ssh帐号登录:ssh -qTfnN -D 7070 951607325@216.234.179.13
+自动配置环境变量：echo "source /home/turtlebot/catkin_ws/devel/setup.bash" >> ~/.bashrc
+source ~/.bashrc-
+
+创建文件夹：mkdir launch
+启动模拟turtlebot:roslaunch rbx1_bringup fake_turtlebot.launch
+使用一个模型的pi-机器人:roslaunch rbx1_bringup fake_pi_robot.launch
+rviz观察模拟机器人:rosrun rviz rviz -d `rospack find rbx1_nav`/sim.rviz
+通过rqt_graph查看消息订阅的框图:rosrun rqt_graph rqt_graph
+使用rosed编辑ROS中的文件:rosed beginner_tutorials Num.msg(按i进入插入模式，esc退出，输入“:wq!”保存，“:q!”不保存)
+新建文档：touch package.xml
+获取root权限：su root
+python首句：#!/usr/bin/env	python
+python中输出中文指令：在文件开头加入#coding=utf-8
+脚本文件添加可执行权限:chmod +x test.py
+PC键盘控制turtlebot:
+turtlebot:roslaunch turtlebot_bringup minimal.launch
+PC:roslaunch turtlebot_teleop keyboard_teleop.launch
+roslaunch turtlebot_dashboard turtlebot_dashboard.launch
+跟随：roslaunch turtlebot_follower follower.launch
+查看IP地址：ifconfig,查看wlan0中的inet地址
+机器人操作界面：rqt_remocon
+创建地图：turtlebot:roslaunch turtlebot_navigation gmapping_demo.launch
+查看地图:roslaunch turtlebot_rviz_launchers view_navigation.launch
+保存地图：turtlebot:rosrun map_server map_saver -f /home/turtlebot/map/my_map
+打开地图：turtlebot:roslaunch turtlebot_navigation amcl_demo.launch map_file:=/home/turtlebot/map/my_map.yaml
+转圈的指令：roslaunch kobuki_auto_docking minimal.launch --screen
+roslaunch kobuki_auto_docking activate.launch --screen
+turtlebot走直线：cd ~/helloworld/turtlebot
+python goforward.py
+修改参数:rosrun rqt_reconfigure rqt_reconfigure
+机器人转圈：rostopic pub -r 10 /cmd_vel_mux/input/navi geometry_msgs/Twist '{linear: {x: 0, y: 0, z: 0}, angular: {x: 0, y: 0, z: 0.5}}'
+停止：rostopic pub -1 /cmd_vel_mux/input/navi geometry_msgs/Twist '{}'
+连接turtlebot:ssh turtlebot@192.168.1.102
+显示深度图像：rosrun image_view disparity_view image:=/camera/depth/disparity
+存储图像信息：rosrun image_view image_saver image:=/camera/rgb/image_color
+显示彩色图像:rosrun image_view image_view image:=/camera/rgb/image_color
+打开相机:roslaunch turtlebot_bringup 3dsensor.launch depth_registered_processing:=false depth_registration:=false
+roslaunch openni_launch openni.launch depth_registration:=true
+创建catkin包：catkin_create_pkg rospy sensor_msgs std_msgs
+两电脑间数据传输：scp -r turtlebot@192.168.1.105:~/follower_image ~/
+修改文件：vi ~/catkin_ws/src/follower-master/src/follower_mt.cpp
+删除文件夹内所有文件：rm ~/follower_image/depth/*
+更新DNS缓存：sudo /etc/init.d/networking restart
+将生成的beginner_tutorials包加入到ROS_PACKAGE_PATH中：export ROS_PACKAGE_PATH=/home/robot/workspace/beginner_tutorials:$ROS_PACKAGE_PATH
+安装kinect驱动的方法：http://blog.csdn.net/u013453604/article/details/48013959

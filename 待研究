@@ -1,0 +1,5 @@
+1.二叉树
+2.kdtree
+3.move_base的路径规划主要分为全局规划和局部规划，
+4.分别采用的是A*算法和DWA（Dynamic Window Approach)）算法
+5.特征值求解(QR法)
