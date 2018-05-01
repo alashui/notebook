@@ -5,4 +5,9 @@
 3.编写一个运动控制节点,仿真调试   
 4.整理一下原来写的Pose_estimation_ros
 5.研究move_base源码及其所包含的算法
+	5.1 costmap
+	5.2 planner
+
+
+运动控制策略:使用movebase来控制机器人运动,预设一些目标点.
 

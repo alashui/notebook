@@ -51,3 +51,16 @@ roslaunch openni_launch openni.launch depth_registration:=true
 更新DNS缓存：sudo /etc/init.d/networking restart
 将生成的beginner_tutorials包加入到ROS_PACKAGE_PATH中：export ROS_PACKAGE_PATH=/home/robot/workspace/beginner_tutorials:$ROS_PACKAGE_PATH
 安装kinect驱动的方法：http://blog.csdn.net/u013453604/article/details/48013959
+
+rosbag使用
+
+mkdir ~/bagfiles
+cd ~/bagfiles
+
+rosbag record -a  //记录所有
+rosbag record -O filename /turtle1/cmd_vel /turtle1/pose  //制定话题
+
+rosbag info <your bagfile>
+rosbag play <your bagfile>
+
+rqt_bag//图形化界面

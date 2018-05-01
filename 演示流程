@@ -16,4 +16,4 @@
 		工作机上打开rivz界面：roslaunch turtlebot_rviz_launchers view_navigation.launch
 		打开键盘控制，控制遍历地图，并保存，上网本输入：rosrun map_server map_saver -f /home/turtlebot/map/my_map1
 		（2）导航避障：上网本打开保存的地图：roslaunch turtlebot_navigation amcl_demo.launch map_file:=/home/turtlebot/map/my_map.yaml
-								工作机打开rivz界面：roslaunch turtlebot_rviz_launchers view_navigation.launch
+						工作机打开rivz界面：roslaunch turtlebot_rviz_launchers view_navigation.launch

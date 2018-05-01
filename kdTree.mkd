@@ -1,0 +1,101 @@
+#kdtree
+##1.定义
+每个节点都为k维点的二叉树,构造kd树相当于不断地用垂直于坐标轴的超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每一个结点都对应于一个超矩形区域，非叶结点的左右子树分别表示划分得到的两个区域。
+##2.构造过程
+在k维空间上选择一个比较维度（分割维度）和一个分裂结点(一般选取在该维度上为中位数的实例)，第一个分裂节点为根节点,以通过此分裂结点且垂直于分割方向坐标轴的超平面作将当前空间区域分隔成左右或者上下两个子空间，对应于分裂结点的左右子树。实例也就被分到两个不相交的区域中。重复此过程直到子空间区域内没有实例点时终止。终止时的结点为叶结点。     
+**分割维度选取方法:** 1.依次轮流选取  2.方差最大的维度  3.数据范围最大的维度     
+**实现:**    
+先定义一下节点的数据结构。每个节点应当有下面几个域：      
+&emsp;&emsp;Node-data -  数据矢量， 数据集中某个数据点，是n维矢量（这里也就是k维）   
+&emsp;&emsp;Range  - 空间矢量， 该节点所代表的空间范围    
+&emsp;&emsp;split  - 整数， 垂直于分割超平面的方向轴序号 ,分割的那个维度   
+&emsp;&emsp;Left  - k-d树， 由位于该节点分割超平面左子空间内所有数据点所构成的k-d树    
+&emsp;&emsp;Right  - k-d树， 由位于该节点分割超平面右子空间内所有数据点所构成的k-d树    
+&emsp;&emsp;parent  - k-d树， 父节点  
+
+算法流程:
+```
+    算法：createKDTree 
+    输入：exm_set 样本集       
+    输出 : Kd, 类型为kd-tree   
+       
+    1. 如果exm_set是空的，则返回空的kd-tree   
+       
+    2.调用分裂结点选择程序（输入是exm_set），返回两个值       
+           dom_elt:= exm_set中的一个样本点          
+           split := 分裂维的序号   
+       
+    3.   exm_set_left = {exm∈exm_set – dom_elt && exm[split] <= dom_elt[split]}         
+          exm_set_right = {exm∈exm_set – dom_elt && exm[split] > dom_elt[split]}   
+       
+    4.   left = createKDTree(exm_set_left)      
+          right = createKDTree(exm_set_right) 
+```
+##3.搜索算法
+###3.1 最近邻搜索
+首先通过二叉树搜索（比较待查询节点和分裂节点的分裂维的值，小于等于就进入左子树分支，等于就进入右子树分支直到叶子结点），顺着“搜索路径”很快能找到最近邻的近似点，也就是与待查询点处于同一个子空间的叶子结点；然后再回溯搜索路径，并判断搜索路径上的结点的其他子结点空间中是否可能有距离查询点更近的数据点，如果有可能，则需要跳到其他子结点空间中去搜索（将其他子结点加入到搜索路径）。重复这个过程直到搜索路径为空。
+```
+    算法：kdtreeFindNearest   /* k-d tree的最近邻搜索 */          
+    输入： Kd           /* k-d tree类型*/        
+                target      /* 待查询数据点 */          
+    输出 :  nearest    /* 最近邻数据结点 */   
+       
+                dist            /* 最近邻和查询点的距离 */   
+       
+    1. 如果Kd是空的，则设dist为无穷大返回   
+       
+    2. 向下搜索直到叶子结点   
+       
+    pSearch = &Kd   
+       
+    while(pSearch != NULL)    
+    {    
+        pSearch加入到search_path中;    
+        if(target[pSearch->split] <= pSearch->dom_elt[pSearch->split]) /* 如果小于就进入左子树 */    
+              pSearch = pSearch->left;      
+        else      
+              pSearch = pSearch->right;         
+    }    
+    取出search_path最后一个赋给nearest   
+       
+    dist = Distance(nearest, target);
+        
+    3. 回溯搜索路径       
+    while(search_path不为空)    
+    {    
+            取出search_path最后一个结点赋给pBack          
+            if(pBack->left为空 && pBack->right为空) /* 如果pBack为叶子结点 */                
+                    if( Distance(nearest, target) > Distance(pBack->dom_elt, target) )    
+                    {    
+                            nearest = pBack->dom_elt;    
+                            dist = Distance(pBack->dom_elt, target);    
+                    }         
+            else                 
+            {   
+               
+                    s = pBack->split;    
+                    if( abs(pBack->dom_elt[s] - target[s]) < dist) // 如果以target为中心的圆（球或超球），半径为dist的圆与分
+                     {                                                                          // 割超平面相交， 那么就要跳到另一边的子空间去搜索    
+                       
+                            if( Distance(nearest, target) > Distance(pBack->dom_elt, target) )    
+                            {    
+                                nearest = pBack->dom_elt;    
+                                dist = Distance(pBack->dom_elt, target);    
+                            }    
+                            if(target[s] <= pBack->dom_elt[s]) // 如果target位于pBack的左子空间，
+                                   pSearch = pBack->right;          //那么就要跳到右子空间去搜索                                        
+                            else    
+                                   pSearch = pBack->left; /* 如果target位于pBack的右子空间，那么就要跳到左子空间去搜索 */    
+                            if(pSearch != NULL)    
+                                   pSearch加入到search_path中    
+                    }       
+            }    
+    }   
+```
+###3.2 k近邻搜索
+* a.用kd-tree查找最近邻的算法，其实质是先选择一棵子树查找对应超矩形区域中的最近点，然后和根节点对比，最后判断是否有必要去另一个子树里查找，如有必要则递归到另一棵子树去查找。要查找最近k个点，可以对上述想法稍作修改，维护一个最大长度为k的优先队列（按照距离从小到大的顺序入队），查找的时候还是先选一棵更可能的子树，得到这颗子树对应的超矩形里的最近k个点，存储在优先队列里。然后看看根结点和查询点的距离是否比队尾结点和查询点的距离更小，如果是的话，就把队尾pop出来，把根节点push进优先队列。然后判断是否要进入另一棵子树查询，这里的标准很简单，看队尾结点（也就是距离最大的点）与查询点构成的超球体是否和另一棵子树对应的超矩形相交，如果相交就递归进入另一棵子树查询。
+* b. 重复搜索k次:比如可以对每个结点添加一个标记，如果已经输出该结点为最近邻结点，那么就继续查找次近邻的结点，直到输出k个结点后算法结束。
+
+##参考资料   
+https://blog.csdn.net/silangquan/article/details/41483689     
+https://www.zhihu.com/question/47698243/answer/253885096
